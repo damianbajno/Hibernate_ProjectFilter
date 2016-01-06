@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import pl.dao.WorkerDAO;
+import pl.main.MainClass;
 import pl.pojo.Company;
 import pl.pojo.Worker;
 import pl.table.WorkerTableModel;
@@ -18,76 +19,84 @@ import pl.tools.GBC;
 
 public class AddWorkerFrame extends JFrame {
 
-	private JButton commitButton = new JButton("Dodaj");
-	private JButton exitButton = new JButton("Wyjdź");
-	private JFrame mainFrame;
-	private JFrame addWorkerFrame;
+     private static final String ADD_WORKER_FRAME_TITLE = "Dodaj Pracownika";
+     private static final String EXIT_BUTTON_NAME = "Wyjdź";
+     private static final String COMMIT_BUTTON_NAME = "Dodaj";
+     
+     private JButton commitButton = new JButton(COMMIT_BUTTON_NAME);
+     private JButton exitButton = new JButton(EXIT_BUTTON_NAME);
+     private JFrame mainFrame;
 
-	private Logger logger = Logger.getLogger("HibernateLogger");
+     private Logger logger = Logger.getLogger(MainClass.APPLICATION_LOGGER_NAME);
 
-	public AddWorkerFrame(JFrame mainFrame) {
-		super();
-		this.mainFrame = mainFrame;
-		this.addWorkerFrame = this;
-	}
 
-	public void makeFrame() {
-		setDefaultSettings();
 
-		setLayout(new GridBagLayout());
+     public AddWorkerFrame(JFrame mainFrame) {
+	  super();
+     }
 
-		WorkerPanel workerPanel = new WorkerPanel();
-		CompanyPanel companyPanel = new CompanyPanel();
 
-		add(workerPanel.getPanel(), new GBC(0, 0).setFill(1));
-		add(companyPanel.getButtons(), new GBC(0, 1));
-		add(companyPanel.getPanel(), new GBC(0, 3));
 
-		JPanel panelButton = new JPanel();
-		panelButton.add(commitButton, new GBC(0, 0));
-		panelButton.add(exitButton, new GBC(1, 0));
-		add(panelButton, new GBC(0, 4).setInsets(5, 0, 5, 0));
+     public void makeFrame() {
+	  setDefaultSettings();
 
-		commitButton.addActionListener(new ActionListener() {
+	  setLayout(new GridBagLayout());
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Worker worker = workerPanel.getWorker();
-				Company company = null;
+	  WorkerPanel workerPanel = new WorkerPanel();
+	  CompanyPanel companyPanel = new CompanyPanel();
 
-				company = companyPanel.getCompany();
+	  add(workerPanel.getPanel(), new GBC(0, 0).setFill(1));
+	  add(companyPanel.getButtons(), new GBC(0, 1));
+	  add(companyPanel.getPanel(), new GBC(0, 3));
 
-				if (worker != null && company != null) {
-					worker.setCompany(company);
-					logger.info("Connect worker with company");
-				}
+	  JPanel panelButton = new JPanel();
+	  panelButton.add(commitButton, new GBC(0, 0));
+	  panelButton.add(exitButton, new GBC(1, 0));
+	  add(panelButton, new GBC(0, 4).setInsets(5, 0, 5, 0));
 
-				if (worker != null) {
-					WorkerDAO.persist(worker);
-					workerPanel.clearTextFields();
-					companyPanel.clearTextFilds();
-					logger.info("Save worker");
-					WorkerTableModel.add(worker);
-				}
+	  commitButton.addActionListener(new ActionListener() {
 
-			}
-		});
+	       @Override
+	       public void actionPerformed(ActionEvent e) {
+		    Worker worker = workerPanel.getWorker();
+		    Company company = null;
 
-		exitButton.addActionListener(new ActionListener() {
+		    company = companyPanel.getCompany();
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addWorkerFrame.dispose();
-				SwingUtilities.updateComponentTreeUI(mainFrame);
-			}
-		});
-	}
+		    if (worker != null && company != null) {
+			 worker.setCompany(company);
+			 logger.info("Connect worker with company");
+		    }
 
-	public void setDefaultSettings() {
-		addWorkerFrame.setVisible(true);
-		addWorkerFrame.setTitle("Dodaj Pracownika");
-		addWorkerFrame.setSize(400, 400);
-		addWorkerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
+		    if (worker != null) {
+			 WorkerDAO.persist(worker);
+			 workerPanel.clearTextFields();
+			 companyPanel.clearTextFields();
+			 logger.info("Save worker");
+			 WorkerTableModel.add(worker);
+		    }
+
+	       }
+	  });
+
+	  
+	  JFrame addWorkerFrame=this;
+
+	  exitButton.addActionListener(new ActionListener() {
+	       
+	       @Override
+	       public void actionPerformed(ActionEvent e) {
+		    addWorkerFrame.dispose();
+		    SwingUtilities.updateComponentTreeUI(mainFrame);
+	       }
+	  });
+     }
+     
+     public void setDefaultSettings() {
+	  setVisible(true);
+	  setTitle(ADD_WORKER_FRAME_TITLE);
+	  setSize(400, 400);
+	  setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+     }
 
 }

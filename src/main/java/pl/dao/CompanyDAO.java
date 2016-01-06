@@ -22,7 +22,7 @@ public class CompanyDAO extends DAO {
 			commitTransaction();
 		} catch (HibernateException e) {
 			rollback();
-			System.out.println("CompanyDao Couldn't persist");
+			System.out.println("CompanyDao couldn't persist");
 		}
 
 	}
@@ -34,7 +34,7 @@ public class CompanyDAO extends DAO {
 			commitTransaction();
 		} catch (HibernateException e) {
 			rollback();
-			System.out.println("CompanyDao Couldn't delete");
+			System.out.println("CompanyDao couldn't delete");
 		}
 	}
 
@@ -45,7 +45,7 @@ public class CompanyDAO extends DAO {
 			commitTransaction();
 		} catch (HibernateException e) {
 			rollback();
-			System.out.println("CompanyDao Couldn't update");
+			System.out.println("CompanyDao couldn't update");
 		}
 	}
 
@@ -59,7 +59,7 @@ public class CompanyDAO extends DAO {
 			commitTransaction();
 		} catch (HibernateException e) {
 			rollback();
-			System.out.println("CompanyDao rollback getAllCompany");
+			System.out.println("CompanyDao couldn't get all Companys");
 		}
 		return companys;
 	}

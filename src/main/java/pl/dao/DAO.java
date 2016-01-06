@@ -47,7 +47,7 @@ public class DAO {
 			System.out.println("Transaction started rolling back");
 			getSession().getTransaction().rollback();
 		} catch (HibernateException e) {
-			System.out.println("Transaction Can't roll back");
+			System.out.println("Transaction can't roll back");
 			e.printStackTrace();
 		}
 		try {

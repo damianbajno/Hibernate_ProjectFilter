@@ -13,7 +13,10 @@ import com.mysql.jdbc.Buffer;
 
 public class Generator {
 
-	private static Properties generatorProperties;
+	private static final String GENERATOR_IO_EXEPTION_MESSAGE = "Generator: IOExeption";
+     private static final String FILE_NOT_FOUND_MESSAGE = "Generator: FileNotFound";
+     private static Properties generatorProperties;
+
 	static {
 		generatorProperties = new Properties();
 		
@@ -24,10 +27,10 @@ public class Generator {
 		try {
 			generatorProperties.load(resourceAsStream);
 		} catch (FileNotFoundException e) {
-			System.out.println("Generator: FileNotFound");
+			System.out.println(FILE_NOT_FOUND_MESSAGE);
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Generator: IOExeption");
+			System.out.println(GENERATOR_IO_EXEPTION_MESSAGE);
 			e.printStackTrace();
 		}
 

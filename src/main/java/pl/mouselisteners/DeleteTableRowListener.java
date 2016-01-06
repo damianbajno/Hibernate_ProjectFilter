@@ -15,12 +15,12 @@ import pl.pojo.Worker;
 import pl.table.WorkerJTable;
 import pl.table.WorkerTableModel;
 
-public class MouseListenerDeleteTableRow extends MouseAdapter {
+public class DeleteTableRowListener extends MouseAdapter {
 
 	private WorkerJTable workerTable;
 	private JFrame workerFrame;
 
-	public MouseListenerDeleteTableRow(WorkerJTable workerTable,
+	public DeleteTableRowListener(WorkerJTable workerTable,
 			JFrame workerFrame) {
 		super();
 		this.workerTable = workerTable;
@@ -48,10 +48,11 @@ public class MouseListenerDeleteTableRow extends MouseAdapter {
 
 	private class PopUpMenu extends JPopupMenu {
 
-		private JMenuItem startItem;
+		private static final String DELETE_ROW_POPUP_TEXT = "Delete Row";
+	       private JMenuItem startItem;
 
 		public PopUpMenu() {
-			startItem = new JMenuItem("Delete Row");
+			startItem = new JMenuItem(DELETE_ROW_POPUP_TEXT);
 			startItem.addActionListener(new ActionListener() {
 
 				@Override

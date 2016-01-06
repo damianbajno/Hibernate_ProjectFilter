@@ -17,135 +17,155 @@ import pl.tools.Tools;
 
 public class CompanyPanel {
 
-	private JLabel nazwaFirmyLabel = new JLabel("Nazwa firmy");
-	private JLabel segmentLabel = new JLabel("Segment działalności");
-	private JLabel miastoLabel = new JLabel("Miasto siedziby firmy");
+     private static final String COMPANY_CHECK_BOX_TITLE = "Stwórz Firmę";
+     private static final String CHOOSE_COMPANY_BUTTON = "Wybierz Firmę";
+     private static final String COMPANY_TITLE_PANEL = "Firma";
 
-	private JTextField nazwaFirmyTextField = new JTextField(20);
-	private JTextField segmentTextField = new JTextField(20);
-	private JTextField miastoTextField = new JTextField(20);
+     private JLabel companyNameLabel = new JLabel("Nazwa firmy");
+     private JLabel segmentLabel = new JLabel("Segment działalności");
+     private JLabel townLabel = new JLabel("Miasto siedziby firmy");
 
-	private JCheckBox companyCheckBox = new JCheckBox(
-			"Stwórz Firmę");
-	private JButton getCompanyButton = new JButton("Wybierz Firmę");
+     private JTextField companyNameTextField = new JTextField(20);
+     private JTextField segmentTextField = new JTextField(20);
+     private JTextField townTextField = new JTextField(20);
 
-	private Company company=null;
-	private CompanyFrame chooseCompanyFromFrame=new CompanyFrame();
+     private JCheckBox companyCheckBox = new JCheckBox(COMPANY_CHECK_BOX_TITLE);
+     private JButton chooseCompanyButton = new JButton(CHOOSE_COMPANY_BUTTON);
 
-	public CompanyPanel() {
-		defaulteFiledsSettings();
-	}
+     private Company company = null;
+     private CompanyFrame companyFrame = new CompanyFrame();
 
-	public JPanel getPanel() {
-		JPanel companyPanel = new JPanel();
-		companyPanel.setLayout(new GridBagLayout());
-		companyPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createBevelBorder(4), "Firma"));
 
-		companyPanel.add(nazwaFirmyLabel, new GBC(0, 0).setAnchor(GBC.WEST)
-				.setIpad(10, 10));
-		companyPanel.add(nazwaFirmyTextField, new GBC(1, 0));
 
-		companyPanel.add(segmentLabel, new GBC(0, 1).setAnchor(GBC.WEST)
-				.setIpad(10, 10));
-		companyPanel.add(segmentTextField, new GBC(1, 1));
+     public CompanyPanel() {
+	  defaultFieldsSettings();
+     }
 
-		companyPanel.add(miastoLabel, new GBC(0, 2).setAnchor(GBC.WEST)
-				.setIpad(10, 10));
-		companyPanel.add(miastoTextField, new GBC(1, 2));
-		return companyPanel;
-	}
 
-	public JPanel getButtons() {
-		JPanel companyButtons = new JPanel();
 
-		companyButtons.setLayout(new GridBagLayout());
-		companyCheckBox.addActionListener(new CompanyCheckBoxListener());
+     public JPanel getPanel() {
+	  JPanel companyPanel = new JPanel();
+	  companyPanel.setLayout(new GridBagLayout());
+	  companyPanel.setBorder(BorderFactory.createTitledBorder(
+		    BorderFactory.createBevelBorder(4), COMPANY_TITLE_PANEL));
 
-		companyButtons.add(companyCheckBox, new GBC(0, 0)
-				.setAnchor(GBC.WEST).setInsets(0, 0, 0, 20));
-		getCompanyButton.addActionListener(new CompanyButtonListener());
-		companyButtons.add(getCompanyButton,
-				new GBC(1, 0).setInsets(5, 0, 5, 0));
+	  companyPanel.add(companyNameLabel, new GBC(0, 0).setAnchor(GBC.WEST)
+		    .setIpad(10, 10));
+	  companyPanel.add(companyNameTextField, new GBC(1, 0));
 
-		return companyButtons;
-	}
+	  companyPanel.add(segmentLabel, new GBC(0, 1).setAnchor(GBC.WEST)
+		    .setIpad(10, 10));
+	  companyPanel.add(segmentTextField, new GBC(1, 1));
 
-	public Company getCompany() {
-		if (companyCheckBox.isSelected()) {
-			if (areFieldsCorrectlyFieled()) {
-				settingCompanyFromTextFields();
-			}
-		} else {
-			takeCompanyFromFrame();
-		}
-		return company;
-	}
+	  companyPanel.add(townLabel, new GBC(0, 2).setAnchor(GBC.WEST)
+		    .setIpad(10, 10));
+	  companyPanel.add(townTextField, new GBC(1, 2));
+	  return companyPanel;
+     }
 
-	private boolean areFieldsCorrectlyFieled() {
-		return Tools.isText(nazwaFirmyTextField.getText())
-				&& Tools.isText(nazwaFirmyTextField.getText())
-				&& Tools.isText(segmentTextField.getText());
-	}
 
-	private void takeCompanyFromFrame() {
-		if (chooseCompanyFromFrame.isCompanySelected()) {
-			company = chooseCompanyFromFrame.getSelectedCompany();
-		}
-	}
 
-	private void settingCompanyFromTextFields() {
-		company = new Company();
-		company.setName(nazwaFirmyTextField.getText());
-		company.setTown(miastoTextField.getText());
-		company.setSegment(segmentTextField.getText());
-	}
+     public JPanel getButtons() {
+	  JPanel companyButtons = new JPanel();
 
-	private void defaulteFiledsSettings() {
-		companyCheckBox.setSelected(false);
-		getCompanyButton.setEnabled(true);
-		nazwaFirmyTextField.setEditable(false);
-		segmentTextField.setEditable(false);
-		miastoTextField.setEditable(false);
-	}
+	  companyButtons.setLayout(new GridBagLayout());
+	  companyCheckBox.addActionListener(new CompanyCheckBoxListener());
 
-	public void clearTextFilds() {
-		nazwaFirmyTextField.setText("");
-		segmentTextField.setText("");
-		miastoTextField.setText("");
-	}
+	  companyButtons.add(companyCheckBox, new GBC(0, 0).setAnchor(GBC.WEST)
+		    .setInsets(0, 0, 0, 20));
+	  chooseCompanyButton.addActionListener(new CompanyButtonListener());
+	  companyButtons.add(chooseCompanyButton,
+		    new GBC(1, 0).setInsets(5, 0, 5, 0));
 
-	
-	private class CompanyButtonListener implements ActionListener
-	{
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				companyCheckBox.setSelected(false);
-				chooseCompanyFromFrame = new CompanyFrame(
-						nazwaFirmyTextField, segmentTextField, miastoTextField);
-				chooseCompanyFromFrame.make();
-				
-			}
-	}
-	
-	private class CompanyCheckBoxListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (companyCheckBox.isSelected()) {
-				setEditableTextFieldsAndButton(true);
-			} else {
-				setEditableTextFieldsAndButton(false);
-			}
+	  return companyButtons;
+     }
 
-		}
 
-		private void setEditableTextFieldsAndButton(boolean editable) {
-			nazwaFirmyTextField.setEditable(editable);
-			segmentTextField.setEditable(editable);
-			miastoTextField.setEditable(editable);
-			getCompanyButton.setEnabled(!editable);
-		}
-	}
+
+     public Company getCompany() {
+	  if (companyCheckBox.isSelected()) {
+	       if (areFieldsCorrectlyFieled()) {
+		    settingCompanyFromTextFields();
+	       }
+	  } else {
+	       takeCompanyFromFrame();
+	  }
+	  return company;
+     }
+
+
+
+     private boolean areFieldsCorrectlyFieled() {
+	  return Tools.isText(companyNameTextField.getText())
+		    && Tools.isText(companyNameTextField.getText())
+		    && Tools.isText(segmentTextField.getText());
+     }
+
+
+
+     private void takeCompanyFromFrame() {
+	  if (companyFrame.isCompanySelected()) {
+	       company = companyFrame.getSelectedCompany();
+	  }
+     }
+
+
+
+     private void settingCompanyFromTextFields() {
+	  company = new Company();
+	  company.setName(companyNameTextField.getText());
+	  company.setTown(townTextField.getText());
+	  company.setSegment(segmentTextField.getText());
+     }
+
+
+
+     private void defaultFieldsSettings() {
+	  companyCheckBox.setSelected(false);
+	  chooseCompanyButton.setEnabled(true);
+	  companyNameTextField.setEditable(false);
+	  segmentTextField.setEditable(false);
+	  townTextField.setEditable(false);
+     }
+
+
+
+     public void clearTextFields() {
+	  companyNameTextField.setText("");
+	  segmentTextField.setText("");
+	  townTextField.setText("");
+     }
+
+     private class CompanyButtonListener implements ActionListener {
+
+	  @Override
+	  public void actionPerformed(ActionEvent e) {
+	       companyCheckBox.setSelected(false);
+	       companyFrame = new CompanyFrame(companyNameTextField,
+			 segmentTextField, townTextField);
+	       companyFrame.create();
+
+	  }
+     }
+
+     private class CompanyCheckBoxListener implements ActionListener {
+	  @Override
+	  public void actionPerformed(ActionEvent e) {
+	       if (companyCheckBox.isSelected()) {
+		    setEditableTextFieldsAndButton(true);
+	       } else {
+		    setEditableTextFieldsAndButton(false);
+	       }
+
+	  }
+
+
+
+	  private void setEditableTextFieldsAndButton(boolean editable) {
+	       companyNameTextField.setEditable(editable);
+	       segmentTextField.setEditable(editable);
+	       townTextField.setEditable(editable);
+	       chooseCompanyButton.setEnabled(!editable);
+	  }
+     }
 }

@@ -18,7 +18,8 @@ import javax.swing.table.TableCellEditor;
 import pl.dao.WorkerDAO;
 import pl.frameandpanel.CompanyFrame;
 import pl.frameandpanel.WorkerFrame;
-import pl.mouselisteners.MouseListenerDeleteTableRow;
+import pl.main.MainClass;
+import pl.mouselisteners.DeleteTableRowListener;
 import pl.pojo.Company;
 import pl.pojo.Worker;
 
@@ -28,15 +29,15 @@ public class WorkerJTable extends JTable {
 	private WorkerJTable workerJTable;
 	private CompanyFrame companyFrame;
 
-	private Logger logger = Logger.getLogger("HibernateLogger");
+	private Logger logger = Logger.getLogger(MainClass.APPLICATION_LOGGER_NAME);
 
 	public WorkerJTable(WorkerFrame workerFrame) {
 		this.workerJTable = this;
 
-		addMouseListener(new MouseListenerDeleteTableRow(this, workerFrame));
+		addMouseListener(new DeleteTableRowListener(this, workerFrame));
 		setModel(workerTableModel);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		getColumn(this.nameOfCompanyIdColumn()).setCellEditor(
+		getColumn(this.companyNameIdColumn()).setCellEditor(
 				new CompanyCellEditor());
 	}
 
@@ -44,7 +45,7 @@ public class WorkerJTable extends JTable {
 		return WorkerTableModel.getWorker(this.getSelectedRow());
 	}
 
-	private String nameOfCompanyIdColumn() {
+	private String companyNameIdColumn() {
 		JoinColumn[] companyAnnotation = null;
 		try {
 			Field companyField = Worker.class.getDeclaredField("company");
@@ -62,10 +63,11 @@ public class WorkerJTable extends JTable {
 			TableCellEditor, ActionListener {
 
 		private JButton button = new JButton();
+		String BUTTON_ACTION_COMMAND = "SetCompany";
 
 		public CompanyCellEditor() {
-			button.setActionCommand("SetCompany");
-			button.addActionListener(this);
+		    button.setActionCommand(BUTTON_ACTION_COMMAND);
+		    button.addActionListener(this);
 
 		}
 
@@ -74,9 +76,9 @@ public class WorkerJTable extends JTable {
 			JButton button = (JButton) e.getSource();
 			button.setBackground(Color.white);
 
-			if (e.getActionCommand().equals("SetCompany")) {
+			if (e.getActionCommand().equals(BUTTON_ACTION_COMMAND)) {
 				companyFrame = new CompanyFrame(button);
-				companyFrame.make();
+				companyFrame.create();
 
 				logger.info("Create CompanyFrame");
 			}
@@ -97,16 +99,21 @@ public class WorkerJTable extends JTable {
 
 		@Override
 		public Object getCellEditorValue() {
-			worker = null;
+			
+		     	worker = null;
 			company = null;
-			logger.info("get to CellEditorValues");
+			logger.info("getCellEditorValue method");
+			
 			if (companyFrame.isCompanySelected()) {
-				company = companyFrame.getSelectedCompany();
+			
+			     	company = companyFrame.getSelectedCompany();
 				worker = workerJTable.getSelectedWorker();
 				worker.setCompany(company);
 				WorkerDAO.update(worker);
 				logger.info("Save changes in database");
+
 			}
+			
 			return null;
 		}
 	}

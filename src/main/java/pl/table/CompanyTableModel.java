@@ -15,12 +15,14 @@ import pl.pojo.Worker;
 import pl.tools.Tools;
 
 public class CompanyTableModel implements TableModel {
-	private static List<Company> companyList = CompanyDAO.getAll();
+     
+     private static final String MESSAGE_WHEN_TABLE_IS_EMPTY = "Tabela jest pusta";
+     private static List<Company> companyList = CompanyDAO.getAll();
 
 	public CompanyTableModel() {
 		super();
 		if (companyList.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Tabela jest pusta", null,
+			JOptionPane.showMessageDialog(null, MESSAGE_WHEN_TABLE_IS_EMPTY, null,
 					JOptionPane.INFORMATION_MESSAGE, null);
 		}
 	}
@@ -44,7 +46,6 @@ public class CompanyTableModel implements TableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -75,19 +76,14 @@ public class CompanyTableModel implements TableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
 
 	}
 

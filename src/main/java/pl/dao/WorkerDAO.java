@@ -35,7 +35,7 @@ public class WorkerDAO extends DAO {
 			getSession().saveOrUpdate(worker);
 			commitTransaction();
 		} catch (HibernateException e) {
-			System.out.println("WorkerDAO couldn't saveOrUpdate a worker.");
+			System.out.println("WorkerDAO couldn't saveOrUpdate worker.");
 			rollback();
 		}
 	}
@@ -58,7 +58,7 @@ public class WorkerDAO extends DAO {
 			worker = (Worker) getSession().get(Worker.class, id);
 			commitTransaction();
 		} catch (HibernateException e) {
-			System.out.println("WorkerDAO couldn't get a worker.");
+			System.out.println("WorkerDAO couldn't get worker.");
 			rollback();
 		}
 		return worker;
@@ -72,7 +72,7 @@ public class WorkerDAO extends DAO {
 			commitTransaction();
 		} catch (HibernateException e) {
 			rollback();
-			System.out.println("WorkerDAO couldn't deleteOrphan worker");
+			System.out.println("WorkerDAO couldn't delete worker Orphan");
 		}
 	}
 
@@ -121,7 +121,7 @@ public class WorkerDAO extends DAO {
 			commitTransaction();
 		} catch (HibernateException e) {
 			rollback();
-			System.out.println("WorkerDAO couldn't get All worker");
+			System.out.println("WorkerDAO couldn't get all workers");
 		}
 		return workers;
 

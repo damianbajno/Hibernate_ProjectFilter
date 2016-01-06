@@ -17,13 +17,16 @@ import pl.pojo.Company;
 import pl.table.CompanyJTable;
 
 public class CompanyFrame extends JFrame {
-	private static final String frameName = "Firmy";
+	
+     	private static final String COMPANY_NAME_FRAME = "Firmy";
+     	private static final String COMMIT_BUTTON_TITLE = "Commit";
+
 
 	private CompanyJTable companyJTable = new CompanyJTable();
-	private JTextField nazwaFirmyTextField = new JTextField();
+	private JTextField companyNameTextField = new JTextField();
 	private JTextField segmentTextField = new JTextField();
-	private JTextField miastoTextField = new JTextField();
-	private JButton committeeButton = new JButton("Committee");
+	private JTextField townTextField = new JTextField();
+	private JButton commitButton = new JButton(COMMIT_BUTTON_TITLE);
 	private JButton chooseCompanyButton;
 
 	public CompanyFrame() {
@@ -33,40 +36,43 @@ public class CompanyFrame extends JFrame {
 	public CompanyFrame(JButton chooseCompanyButton) throws HeadlessException {
 		super();
 		this.chooseCompanyButton = chooseCompanyButton;
-		committeeButton.addActionListener(new ActionButton());
+		commitButton.addActionListener(new ActionButton());
 	}
 
 	public CompanyFrame(JTextField nazwaFirmyTextField,
 			JTextField segmentTextField, JTextField miastoTextField) {
 
 		super();
-		this.nazwaFirmyTextField = nazwaFirmyTextField;
+		this.companyNameTextField = nazwaFirmyTextField;
 		this.segmentTextField = segmentTextField;
-		this.miastoTextField = miastoTextField;
-		committeeButton.addActionListener(new ActionTextFilds());
+		this.townTextField = miastoTextField;
+		commitButton.addActionListener(new ActionTextFilds());
 	}
 
-	public void make() {
+	public void create() {
 
 		setDefaultSettings();
 
 		JScrollPane companyTablePane = new JScrollPane(companyJTable);
 		add(companyTablePane, BorderLayout.CENTER);
 
-		add(committeeButton, BorderLayout.SOUTH);
+		add(commitButton, BorderLayout.SOUTH);
 
 	}
 
+	private static final String SELECT_COMPANY_MESSAGE = "Select Company";
+
 	private class ActionButton implements ActionListener {
 
-		@Override
+
+	       @Override
 		public void actionPerformed(ActionEvent e) {
 			if (companyJTable.isCompanySelected()) {
 				Company company = companyJTable.getSelectedCompany();
 				chooseCompanyButton.setText(String.valueOf(company.getCompanyId()));
 				setVisible(false);
 			} else {
-				JOptionPane.showMessageDialog(null, "Select Company");
+				JOptionPane.showMessageDialog(null, SELECT_COMPANY_MESSAGE);
 			}
 		}
 
@@ -78,12 +84,12 @@ public class CompanyFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if ((companyJTable.isCompanySelected())) {
 				Company company = companyJTable.getSelectedCompany();
-				nazwaFirmyTextField.setText(company.getName());
+				companyNameTextField.setText(company.getName());
 				segmentTextField.setText(company.getSegment());
-				miastoTextField.setText(company.getTown());
+				townTextField.setText(company.getTown());
 				setVisible(false);
 			} else {
-				JOptionPane.showMessageDialog(null, "Select Company");
+				JOptionPane.showMessageDialog(null, SELECT_COMPANY_MESSAGE);
 			}
 		}
 	}
@@ -91,7 +97,7 @@ public class CompanyFrame extends JFrame {
 	public void setDefaultSettings() {
 		setVisible(true);
 		setSize(400, 400);
-		setTitle(frameName);
+		setTitle(COMPANY_NAME_FRAME);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
