@@ -11,6 +11,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import pl.dao.WorkerDAO;
+import pl.exception.TableNotEmptyException;
 import pl.main.MainClass;
 import pl.pojo.Worker;
 import pl.tools.Tools;
@@ -29,6 +30,18 @@ public class WorkerTableModel extends AbstractTableModel {
 	  if (workerList.isEmpty())
 	       JOptionPane.showMessageDialog(null, MESSAGE_WHEN_TABLE_IS_EMPTY);
 
+     }
+
+
+
+     public static void refreshData() {
+	  workerList = WorkerDAO.getAll();
+     }
+
+
+
+     public static boolean isEmpty() {
+	  return workerList.isEmpty();
      }
 
 
@@ -94,7 +107,7 @@ public class WorkerTableModel extends AbstractTableModel {
 
      @Override
      public Class<?> getColumnClass(int columnIndex) {
-	  logger.info("Getting a column " + columnIndex + " class");
+	  // logger.info("Getting a column " + columnIndex + " class");
 	  Field[] workerFields = Worker.class.getDeclaredFields();
 	  return workerFields[columnIndex].getType();
      }
@@ -105,7 +118,7 @@ public class WorkerTableModel extends AbstractTableModel {
      public Object getValueAt(int rowIndex, int columnIndex) {
 
 	  Worker worker = workerList.get(rowIndex);
-	  logger.info("Getting worker table values at " + rowIndex);
+	  // logger.info("Getting worker table values at " + rowIndex);
 
 	  switch (columnIndex) {
 	       case 0:
@@ -135,9 +148,9 @@ public class WorkerTableModel extends AbstractTableModel {
 
      @Override
      public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-	  
-	  logger.info("Setting worker table values at row= " + rowIndex
-		    + " column= " + columnIndex);
+
+	  // logger.info("Setting worker table values at row= " + rowIndex
+	  // + " column= " + columnIndex);
 
 	  Worker selectedWorker = workerList.get(rowIndex);
 

@@ -2,6 +2,8 @@ package pl.tools;
 
 import java.util.Random;
 
+import org.aspectj.lang.annotation.Around;
+
 import pl.dao.CompanyDAO;
 import pl.dao.WorkerDAO;
 import pl.pojo.Company;
@@ -13,7 +15,6 @@ public class Data {
      public static void main(String[] args) {
 	  Data.sendToDataBase();
      }
-
 
 
      public static void sendToDataBase() {
